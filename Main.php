@@ -169,6 +169,29 @@
 
                 </div>
 
+
+                <!-- BLACKJACK -->
+
+                <div class="game-card">
+
+                    <div class="game-icon blackjack">
+                        21
+                    </div>
+
+                    <h3>Blackjack</h3>
+
+                    <p>
+                        Play against the dealer and explore
+                        probability, strategy and house edge.
+                    </p>
+
+                    <a href="games/blackjack.php" class="play-button">
+                        Play
+                    </a>
+
+                </div>
+
+
             </div>
 
         </section>
@@ -199,7 +222,7 @@
             <div class="stat-box">
 
                 <div>
-                    <strong>4</strong>
+                    <strong>5</strong>
                     <span>Games</span>
                 </div>
 

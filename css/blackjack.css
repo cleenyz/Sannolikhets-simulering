@@ -1,0 +1,931 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: #0b0d12;
+    color: #f5f5f7;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+}
+
+.page {
+    min-height: 100vh;
+}
+
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+
+.topbar {
+    height: 72px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 45px;
+
+    background: #11141b;
+
+    border-bottom: 1px solid #252934;
+}
+
+.logo {
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 18px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+}
+
+.balance {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    background: #191c24;
+
+    border: 1px solid #292d38;
+
+    padding: 10px 16px;
+
+    border-radius: 8px;
+}
+
+.balance span {
+    color: #858995;
+
+    font-size: 13px;
+}
+
+.balance strong {
+    font-size: 15px;
+}
+
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.container {
+    width: 1200px;
+
+    max-width: calc(100% - 40px);
+
+    margin: 45px auto 80px;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.page-header {
+    margin-bottom: 30px;
+}
+
+.small-title {
+    color: #8066e8;
+
+    font-size: 11px;
+
+    font-weight: bold;
+
+    letter-spacing: 1.5px;
+}
+
+.page-header h1 {
+    font-size: 42px;
+
+    margin-top: 8px;
+
+    margin-bottom: 8px;
+}
+
+.page-header p {
+    color: #858995;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   GAME LAYOUT
+========================================================= */
+
+.game-layout {
+    display: grid;
+
+    grid-template-columns: 1.5fr 1fr;
+
+    gap: 20px;
+
+    align-items: start;
+}
+
+
+/* =========================================================
+   GAME CARD
+========================================================= */
+
+.game-card {
+    background: #11141b;
+
+    border: 1px solid #282c37;
+
+    border-radius: 12px;
+
+    padding: 25px;
+}
+
+.game-header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding-bottom: 20px;
+
+    border-bottom: 1px solid #252934;
+}
+
+.label {
+    color: #767a87;
+
+    font-size: 11px;
+
+    letter-spacing: 1px;
+}
+
+.game-header h2 {
+    font-size: 18px;
+
+    margin-top: 5px;
+}
+
+.active,
+.inactive {
+    padding: 6px 10px;
+
+    border-radius: 5px;
+
+    font-size: 10px;
+
+    font-weight: bold;
+}
+
+.active {
+    background: #17261f;
+
+    color: #58c987;
+
+    border: 1px solid #28543b;
+}
+
+.inactive {
+    background: #191c23;
+
+    color: #777b87;
+
+    border: 1px solid #2b2e38;
+}
+
+
+/* =========================================================
+   HAND
+========================================================= */
+
+.hand-section {
+    padding: 25px 0;
+
+    border-bottom: 1px solid #252934;
+}
+
+.hand-title {
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-bottom: 15px;
+
+    color: #858995;
+}
+
+.hand-title strong {
+    color: white;
+}
+
+.cards {
+    display: flex;
+
+    gap: 10px;
+
+    min-height: 108px;
+}
+
+
+/* =========================================================
+   CARDS
+========================================================= */
+
+.card {
+    width: 72px;
+
+    height: 100px;
+
+    background: #f3f3f3;
+
+    color: #111;
+
+    border-radius: 7px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.25);
+
+    animation: dealCard .35s ease;
+}
+
+.card-value {
+    font-size: 25px;
+
+    font-weight: bold;
+}
+
+.card-suit {
+    font-size: 27px;
+
+    margin-top: 2px;
+}
+
+.card.red {
+    color: #c43e4b;
+}
+
+.hidden-card {
+    background:
+        repeating-linear-gradient(
+            45deg,
+            #252b48,
+            #252b48 8px,
+            #30385d 8px,
+            #30385d 16px
+        );
+
+    color: white;
+
+    border: 2px solid #4b5686;
+}
+
+.hidden-card span {
+    font-size: 28px;
+}
+
+
+/* =========================================================
+   CARD ANIMATION
+========================================================= */
+
+@keyframes dealCard {
+
+    0% {
+        opacity: 0;
+
+        transform:
+            translateY(-25px)
+            rotate(-5deg)
+            scale(.8);
+    }
+
+    100% {
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            rotate(0)
+            scale(1);
+    }
+}
+
+
+/* =========================================================
+   RESULT
+========================================================= */
+
+.game-result {
+    text-align: center;
+
+    padding: 18px;
+
+    margin-top: 20px;
+
+    border-radius: 7px;
+
+    font-weight: bold;
+
+    letter-spacing: 1px;
+}
+
+.game-result.win {
+    background: #14271e;
+
+    border: 1px solid #28543b;
+
+    color: #55d68b;
+}
+
+.game-result.lose {
+    background: #291719;
+
+    border: 1px solid #5c2b2e;
+
+    color: #df6969;
+}
+
+.game-result.push {
+    background: #272313;
+
+    border: 1px solid #5a4d25;
+
+    color: #d7b75d;
+}
+
+
+/* =========================================================
+   CONTROLS
+========================================================= */
+
+.controls {
+    padding-top: 25px;
+}
+
+.controls form {
+    width: 100%;
+}
+
+.bet-input {
+    margin-bottom: 15px;
+}
+
+.bet-input label {
+    display: block;
+
+    color: #858995;
+
+    font-size: 12px;
+
+    margin-bottom: 8px;
+}
+
+.bet-input input {
+    width: 100%;
+
+    height: 48px;
+
+    padding: 0 15px;
+
+    background: #0c0f14;
+
+    color: white;
+
+    border: 1px solid #2b2f3b;
+
+    border-radius: 7px;
+
+    font-size: 15px;
+
+    outline: none;
+}
+
+.bet-input input:focus {
+    border-color: #8066e8;
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.primary-button,
+.secondary-button {
+    height: 50px;
+
+    border-radius: 7px;
+
+    border: none;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.primary-button {
+    width: 100%;
+
+    background: #7358d8;
+
+    color: white;
+}
+
+.primary-button:hover {
+    background: #8065e6;
+}
+
+.secondary-button {
+    width: 100%;
+
+    background: #242832;
+
+    color: white;
+
+    border: 1px solid #353a46;
+}
+
+.secondary-button:hover {
+    background: #2d323e;
+}
+
+.game-buttons {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 12px;
+}
+
+
+/* =========================================================
+   INFORMATION CARD
+========================================================= */
+
+.information-card {
+    background: #11141b;
+
+    border: 1px solid #282c37;
+
+    border-radius: 12px;
+
+    padding: 25px;
+}
+
+.information-card h2 {
+    font-size: 21px;
+
+    margin-top: 8px;
+
+    margin-bottom: 25px;
+}
+
+.info-section {
+    margin-bottom: 25px;
+}
+
+.info-section h3 {
+    font-size: 14px;
+
+    margin-bottom: 8px;
+}
+
+.info-section p {
+    color: #858995;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+}
+
+.formula {
+    margin-top: 12px;
+
+    padding: 12px;
+
+    background: #0c0f14;
+
+    border: 1px solid #252934;
+
+    border-radius: 6px;
+
+    color: #b6a8ed;
+
+    font-family: monospace;
+}
+
+
+/* =========================================================
+   HOUSE EDGE
+========================================================= */
+
+.house-edge-box {
+    padding: 17px;
+
+    background: #211c12;
+
+    border: 1px solid #4a3b21;
+
+    border-radius: 8px;
+}
+
+.house-edge-box strong {
+    display: block;
+
+    color: #d8ad5b;
+
+    margin-bottom: 7px;
+}
+
+.house-edge-box p {
+    color: #91856d;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   EDGE SECTION
+========================================================= */
+
+.edge-section {
+    margin-top: 50px;
+}
+
+.section-heading {
+    max-width: 750px;
+
+    margin-bottom: 25px;
+}
+
+.section-heading h2 {
+    font-size: 27px;
+
+    margin-top: 8px;
+
+    margin-bottom: 10px;
+}
+
+.section-heading p {
+    color: #858995;
+
+    line-height: 1.6;
+}
+
+.edge-grid {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 15px;
+}
+
+.edge-card {
+    background: #11141b;
+
+    border: 1px solid #282c37;
+
+    border-radius: 10px;
+
+    padding: 22px;
+}
+
+.card-number {
+    color: #8066e8;
+
+    font-family: monospace;
+
+    font-size: 12px;
+}
+
+.edge-card h3 {
+    font-size: 17px;
+
+    margin: 20px 0 10px;
+}
+
+.edge-card p {
+    color: #858995;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   EXPECTED VALUE
+========================================================= */
+
+.ev-section {
+    margin-top: 20px;
+
+    padding: 25px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 30px;
+
+    background: #11141b;
+
+    border: 1px solid #282c37;
+
+    border-radius: 10px;
+}
+
+.ev-section h2 {
+    margin-top: 8px;
+
+    margin-bottom: 8px;
+}
+
+.ev-section p {
+    color: #858995;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+}
+
+.formula-large {
+    padding: 18px 25px;
+
+    background: #0c0f14;
+
+    border: 1px solid #292d38;
+
+    border-radius: 7px;
+
+    color: #b6a8ed;
+
+    font-family: monospace;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   POPUP
+========================================================= */
+
+.popup-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0, 0, 0, .72);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    z-index: 1000;
+
+    animation: fadeIn .2s ease;
+}
+
+.popup {
+    position: relative;
+
+    width: 420px;
+
+    max-width: 100%;
+
+    background: #151820;
+
+    border: 1px solid #363a46;
+
+    border-radius: 12px;
+
+    padding: 30px;
+
+    text-align: center;
+
+    animation: popupIn .25s ease;
+}
+
+.popup-close {
+    position: absolute;
+
+    right: 15px;
+
+    top: 12px;
+
+    border: none;
+
+    background: none;
+
+    color: #777b87;
+
+    font-size: 26px;
+
+    cursor: pointer;
+}
+
+.popup-icon {
+    width: 45px;
+
+    height: 45px;
+
+    margin: 0 auto 18px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #302414;
+
+    border: 1px solid #614c26;
+
+    color: #d8ad5b;
+
+    font-weight: bold;
+
+    font-size: 20px;
+}
+
+.popup h2 {
+    font-size: 20px;
+
+    margin-bottom: 10px;
+}
+
+.popup p {
+    color: #858995;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+
+    margin-bottom: 18px;
+}
+
+.popup-balance {
+    padding: 12px;
+
+    background: #0c0f14;
+
+    border: 1px solid #292d38;
+
+    border-radius: 7px;
+
+    color: #777b87;
+
+    font-size: 12px;
+
+    margin-bottom: 18px;
+}
+
+.popup-balance strong {
+    color: white;
+
+    margin-left: 5px;
+}
+
+.popup-button {
+    width: 100%;
+
+    height: 45px;
+
+    border: none;
+
+    border-radius: 7px;
+
+    background: #7358d8;
+
+    color: white;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   POPUP ANIMATION
+========================================================= */
+
+@keyframes fadeIn {
+
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+
+}
+
+@keyframes popupIn {
+
+    from {
+        opacity: 0;
+
+        transform: translateY(15px) scale(.97);
+    }
+
+    to {
+        opacity: 1;
+
+        transform: translateY(0) scale(1);
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .game-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .edge-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media (max-width: 650px) {
+
+    .topbar {
+        padding: 0 20px;
+    }
+
+    .container {
+        max-width: calc(100% - 24px);
+
+        margin-top: 25px;
+    }
+
+    .page-header h1 {
+        font-size: 32px;
+    }
+
+    .cards {
+        flex-wrap: wrap;
+    }
+
+    .card {
+        width: 60px;
+        height: 85px;
+    }
+
+    .card-value {
+        font-size: 20px;
+    }
+
+    .card-suit {
+        font-size: 22px;
+    }
+
+    .ev-section {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    .formula-large {
+        width: 100%;
+
+        overflow-x: auto;
+    }
+
+}
