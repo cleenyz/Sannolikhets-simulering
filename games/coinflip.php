@@ -9,12 +9,11 @@ include '../includes/header.php';
         <h1>Coinflip</h1>
         <p class="info">Klave eller krona. Chans 1/2, vinst 2× insatsen.</p>
 
-        <!-- MYNTET. Två sidor: heads och tails.
-             Vill du ha egna bilder: se README i assets/img -->
+        <!-- MYNTET: heads.png på framsidan, tails.png på baksidan -->
         <div class="coin-area">
             <div class="coin" id="coin">
-                <div class="side heads">K</div>
-                <div class="side tails">Kr</div>
+                <img class="side heads" src="../assets/img/heads.png" alt="Klave">
+                <img class="side tails" src="../assets/img/tails.png" alt="Krona">
             </div>
 
             <!-- Valfri gif som visas medan myntet kastas (av som standard) -->
