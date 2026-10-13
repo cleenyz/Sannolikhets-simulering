@@ -1,261 +1,52 @@
 <?php
-// main.php
+$base = '';
+$title = 'Hem';
+include 'includes/header.php';
 ?>
 
-<!DOCTYPE html>
-<html lang="sv">
+<main>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>LuckLab</title>
-
-    <link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-
-    <!-- NAVIGATION -->
-
-    <nav class="navbar">
-
-        <div class="logo">
-            Luck<span>Lab</span>
+    <section class="hero">
+        <div class="hero-text">
+            <h1>Hur stor är chansen egentligen?</h1>
+            <p>Vi jämför teoretisk sannolikhet med simuleringar av slumpspel. Allt spelas med låtsaspengar.</p>
+            <a href="#games" class="button">Välj spel</a>
         </div>
+    </section>
 
-        <div class="nav-links">
-            <a href="main.php" class="active">Home</a>
-            <a href="#games">Games</a>
-            <a href="#statistics">Statistics</a>
-        </div>
+    <section id="games">
+        <h2>Spel</h2>
 
-        <div class="balance">
-            Balance: <strong>10,000</strong>
-        </div>
+        <div class="games">
 
-    </nav>
-
-
-    <!-- MAIN CONTENT -->
-
-    <main>
-
-        <!-- INTRO -->
-
-        <section class="hero">
-
-            <p class="small-title">
-                PROBABILITY PROJECT
-            </p>
-
-            <h1>
-                Welcome to <span>LuckLab</span>
-            </h1>
-
-            <p>
-                Test different games based on probability and randomness.
-                All games use virtual currency and can later be used
-                for mathematical simulations.
-            </p>
-
-            <a href="#games" class="button">
-                Explore Games
+            <!-- Byt bild: ändra filnamnet i url(...) -->
+            <a class="game-card" href="games/coinflip.php" style="--img: url('assets/img/coinflip.jpg')">
+                <h3>Coinflip</h3>
+                <p>Klave eller krona. 50 % chans.</p>
+                <span class="tag">Spela</span>
             </a>
 
-        </section>
-
-
-        <!-- GAMES -->
-
-        <section id="games" class="section">
-
-            <div class="section-title">
-
-                <div>
-                    <p class="small-title">AVAILABLE GAMES</p>
-                    <h2>Choose a game</h2>
-                </div>
-
+            <div class="game-card soon" style="--img: url('assets/img/dice.jpg')">
+                <h3>Dice</h3>
+                <p>Sexsidig tärning.</p>
+                <span class="tag">Kommer snart</span>
             </div>
 
-
-            <div class="games">
-
-
-                <!-- COINFLIP -->
-
-                <div class="game-card">
-
-                    <div class="game-icon">
-                        50/50
-                    </div>
-
-                    <h3>Coinflip</h3>
-
-                    <p>
-                        Test a 50/50 probability event.
-                    </p>
-
-                    <a href="games/coinflip.php" class="play-button">
-                        Play
-                    </a>
-
-                </div>
-
-
-                <!-- DICE -->
-
-                <div class="game-card">
-
-                    <div class="game-icon dice">
-                        6
-                    </div>
-
-                    <h3>Dice</h3>
-
-                    <p>
-                        Roll a six-sided dice and explore
-                        different probabilities.
-                    </p>
-
-                    <a href="games/dice.php" class="play-button">
-                        Play
-                    </a>
-
-                </div>
-
-
-                <!-- ROULETTE -->
-
-                <div class="game-card">
-
-                    <div class="game-icon roulette">
-                        0
-                    </div>
-
-                    <h3>Roulette</h3>
-
-                    <p>
-                        Simulate roulette outcomes and
-                        calculate their probabilities.
-                    </p>
-
-                    <a href="games/roulette.php" class="play-button">
-                        Play
-                    </a>
-
-                </div>
-
-
-                <!-- SLOTS -->
-
-                <div class="game-card">
-
-                    <div class="game-icon slots">
-                        777
-                    </div>
-
-                    <h3>Slots</h3>
-
-                    <p>
-                        Generate random combinations and
-                        investigate their probability.
-                    </p>
-
-                    <a href="games/slots.php" class="play-button">
-                        Play
-                    </a>
-
-                </div>
-
-
-                <!-- BLACKJACK -->
-
-                <div class="game-card">
-
-                    <div class="game-icon blackjack">
-                        21
-                    </div>
-
-                    <h3>Blackjack</h3>
-
-                    <p>
-                        Play against the dealer and explore
-                        probability, strategy and house edge.
-                    </p>
-
-                    <a href="games/blackjack.php" class="play-button">
-                        Play
-                    </a>
-
-                </div>
-
-
+            <div class="game-card soon" style="--img: url('assets/img/roulette.jpg')">
+                <h3>Roulette</h3>
+                <p>37 fack och husfördel.</p>
+                <span class="tag">Kommer snart</span>
             </div>
 
-        </section>
-
-
-        <!-- PROJECT / STATISTICS -->
-
-        <section id="statistics" class="statistics">
-
-            <div>
-
-                <p class="small-title">
-                    OUR PROJECT
-                </p>
-
-                <h2>
-                    Probability & Simulation
-                </h2>
-
-                <p>
-                    The purpose of this project is to investigate
-                    how theoretical probabilities compare with
-                    results from computer simulations.
-                </p>
-
+            <div class="game-card soon" style="--img: url('assets/img/slots.jpg')">
+                <h3>Slots</h3>
+                <p>Slumpade kombinationer.</p>
+                <span class="tag">Kommer snart</span>
             </div>
 
-            <div class="stat-box">
+        </div>
+    </section>
 
-                <div>
-                    <strong>5</strong>
-                    <span>Games</span>
-                </div>
+</main>
 
-                <div>
-                    <strong>0</strong>
-                    <span>Simulations</span>
-                </div>
-
-                <div>
-                    <strong>100%</strong>
-                    <span>Virtual</span>
-                </div>
-
-            </div>
-
-        </section>
-
-    </main>
-
-
-    <!-- FOOTER -->
-
-    <footer>
-
-        <p>
-            LuckLab — Gymnasiearbete
-        </p>
-
-        <p>
-            Probability & Simulation
-        </p>
-
-    </footer>
-
-</body>
-</html>
+<?php include 'includes/footer.php'; ?>
