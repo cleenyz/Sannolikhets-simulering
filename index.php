@@ -1,7 +1,7 @@
 <?php
 $base = '';
 $title = 'Hem';
-include 'includes/header.php';
+include __DIR__ . '/includes/header.php';
 ?>
 
 <main>
@@ -11,6 +11,7 @@ include 'includes/header.php';
             <h1>Hur stor är chansen egentligen?</h1>
             <p>Vi jämför teoretisk sannolikhet med simuleringar av slumpspel. Allt spelas med låtsaspengar.</p>
             <a href="#games" class="button">Välj spel</a>
+            <a href="simulation.php" class="button" style="margin-left: 10px;">Se simuleringen</a>
         </div>
     </section>
 
@@ -19,7 +20,6 @@ include 'includes/header.php';
 
         <div class="games">
 
-            <!-- Byt bild: ändra filnamnet i url(...) -->
             <a class="game-card" href="games/coinflip.php" style="--img: url('assets/img/coinflip.jpg')">
                 <h3>Coinflip</h3>
                 <p>Klave eller krona. 50 % chans.</p>
@@ -38,7 +38,8 @@ include 'includes/header.php';
                 <span class="tag">Kommer snart</span>
             </div>
 
-            <div class="game-card soon" style="--img: url('assets/img/slots.jpg')">
+            <!-- Ingen slots.jpg finns än. Lägg till bild: style="--img: url('assets/img/slots.jpg')" -->
+            <div class="game-card soon">
                 <h3>Slots</h3>
                 <p>Slumpade kombinationer.</p>
                 <span class="tag">Kommer snart</span>
@@ -49,4 +50,4 @@ include 'includes/header.php';
 
 </main>
 
-<?php include 'includes/footer.php'; ?>
+<?php include __DIR__ . '/includes/footer.php'; ?>

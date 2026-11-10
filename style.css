@@ -201,3 +201,88 @@ a.game-card:hover { border-color: var(--gold); }
     .nav-links { display: none; }
     .hero h1 { font-size: 32px; }
 }
+
+
+/* ===== LIVE STATS ===== */
+.game-layout {
+    display: grid;
+    grid-template-columns: 440px 1fr;
+    gap: 24px;
+    max-width: 1000px;
+    margin: 0 auto;
+    align-items: start;
+}
+
+.live-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+}
+
+.ls-head { display: flex; justify-content: space-between; align-items: center; }
+.ls-head h3 { font-size: 20px; }
+
+.ls-reset {
+    background: none;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 6px 12px;
+    color: var(--muted);
+    font: 14px Georgia, serif;
+    cursor: pointer;
+}
+.ls-reset:hover { color: var(--text); border-color: var(--gold); }
+
+.ls-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.ls-tile {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px 14px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+}
+.ls-tile span { font-size: 13px; color: var(--muted); }
+.ls-tile strong { font-size: 20px; font-variant-numeric: tabular-nums; }
+.ls-wide { grid-column: span 2; }
+.ls-wide strong { font-size: 30px; }
+.ls-pos { color: var(--win); }
+.ls-neg { color: var(--lose); }
+
+.ls-chart {
+    position: relative;
+    padding: 8px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+}
+.ls-chart svg { display: block; width: 100%; height: 180px; }
+.ls-empty {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    font-size: 14px;
+    pointer-events: none;
+}
+.ls-empty[hidden] { display: none; }
+
+.ls-zero { stroke: var(--line); stroke-width: 1; stroke-dasharray: 4 4; vector-effect: non-scaling-stroke; }
+.ls-line { fill: none; stroke-width: 2; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.ls-area { opacity: 0.15; }
+.ls-up .ls-line { stroke: var(--win); }
+.ls-up .ls-area { fill: var(--win); }
+.ls-down .ls-line { stroke: var(--lose); }
+.ls-down .ls-area { fill: var(--lose); }
+
+@media (max-width: 900px) {
+    .game-layout { grid-template-columns: 1fr; }
+    .game-box { width: 100%; }
+}
