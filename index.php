@@ -26,11 +26,11 @@ include __DIR__ . '/includes/header.php';
                 <span class="tag">Spela</span>
             </a>
 
-            <a class="game-card" href="games/dice.php" style="--img: url('assets/img/dice.jpg')">
+            <div class="game-card soon" style="--img: url('assets/img/dice.jpg')">
                 <h3>Dice</h3>
                 <p>Välj din vinstchans. Lägre chans, högre vinst.</p>
-                <span class="tag">Spela</span>
-            </a>
+                <span class="tag">Kommer snart</span>
+            </div>
 
             <div class="game-card soon" style="--img: url('assets/img/roulette.jpg')">
                 <h3>Roulette</h3>
@@ -38,12 +38,11 @@ include __DIR__ . '/includes/header.php';
                 <span class="tag">Kommer snart</span>
             </div>
 
-            <!-- Ingen blackjack.jpg finns än -->
-            <div class="game-card soon" style="--img: url('assets/img/Blackjack.jpg')">
+            <a class="game-card" href="games/blackjack.php" style="--img: url('assets/img/Blackjack.jpg')">
                 <h3>Blackjack</h3>
                 <p>Kom så nära 21 som möjligt.</p>
-                <span class="tag">Kommer snart</span>
-            </div>
+                <span class="tag">Spela</span>
+            </a>
 
             <div class="game-card soon" style="--img: url('assets/img/slots.jpg')">
                 <h3>Slots</h3>

@@ -298,101 +298,260 @@ a.game-card:hover { border-color: var(--gold); }
 }
 
 
-/* ===== PANELER OCH TABELLER (används av dice.php, samma stil som simuleringen) ===== */
-.sim-panel { padding: 20px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
-.sim-panel h3 { font-size: 20px; margin-bottom: 10px; }
-.sim-panel p { color: var(--muted); font-size: 15px; margin-bottom: 8px; }
-.sim-table { width: 100%; border-collapse: collapse; font-size: 15px; }
-.sim-table th, .sim-table td { text-align: left; padding: 10px 6px; border-bottom: 1px solid var(--line); }
-.sim-table th { color: var(--muted); font-weight: normal; }
-.sim-table .num { text-align: right; font-variant-numeric: tabular-nums; }
-
-
-/* ===== DICE ===== */
-.dice-result {                         /* stora siffran för senaste slaget */
-    text-align: center;
-    font-size: 56px;
-    font-weight: bold;
-    font-variant-numeric: tabular-nums;
-}
-.dice-result.win { color: var(--win); }
-.dice-result.lose { color: var(--lose); }
-
-.dice-slider { position: relative; padding-top: 34px; }   /* plats för markören ovanför */
-
-.dice-slider input[type=range] {       /* själva reglaget */
-    -webkit-appearance: none;
-    appearance: none;
-    width: 100%;
-    height: 10px;
-    border-radius: 5px;
-    padding: 0;
-    border: none;
-    cursor: pointer;
-}
-.dice-slider input[type=range]::-webkit-slider-thumb {   /* knoppen, Chrome/Edge/Safari */
-    -webkit-appearance: none;
-    width: 26px; height: 26px;
-    border-radius: 6px;
-    background: var(--gold);
-    border: 3px solid var(--bg);
-}
-.dice-slider input[type=range]::-moz-range-thumb {       /* knoppen, Firefox */
-    width: 22px; height: 22px;
-    border-radius: 6px;
-    background: var(--gold);
-    border: 3px solid var(--bg);
+/* ===== BLACKJACK: layout (inspirerad av Stake) ===== */
+.bj-layout {
+    display: grid;
+    grid-template-columns: 1fr 300px;           /* spelet tar resten, live stats 300px */
+    gap: 20px;
+    align-items: start;                         /* panelerna behåller sin egen höjd */
 }
 
-.dice-marker {                         /* bubblan som visar var slaget hamnade */
-    position: absolute;
-    top: 0;
-    transform: translateX(-50%);       /* centrera bubblan på slaget */
-    padding: 2px 8px;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: bold;
-    color: var(--bg);
-    transition: left 0.4s ease;        /* glider till nya slaget, som på Stake */
-}
-.dice-marker.win { background: var(--win); }
-.dice-marker.lose { background: var(--lose); }
-
-.dice-scale { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-top: 6px; }
-
-.dice-boxes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.dice-boxes div { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px; text-align: center; }
-.dice-boxes span { display: block; font-size: 12px; color: var(--muted); }
-.dice-boxes strong { font-size: 17px; font-variant-numeric: tabular-nums; }
-
-.dice-mode {                           /* knappen som byter under/över */
-    background: none;
-    border: none;
-    color: var(--gold);
-    font: bold 17px Georgia, serif;
-    cursor: pointer;
+.bj-game {
+    display: grid;
+    grid-template-columns: 240px 1fr;           /* kontroller till vänster, bordet till höger */
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;                           /* bordets hörn följer panelens rundning */
 }
 
-.dice-bet { display: flex; gap: 6px; }
-.dice-bet input { flex: 1; min-width: 0; }
-.dice-bet button {                     /* ½ och 2× */
-    width: 48px;
+
+/* ---- Kontroller ---- */
+.bj-controls {
+    display: flex;
+    flex-direction: column;                     /* allt under varandra */
+    gap: 12px;
+    padding: 20px;
+    border-right: 1px solid var(--line);        /* linje mot bordet */
+}
+.bj-controls label { color: var(--muted); font-size: 14px; }
+
+.bj-bet { display: flex; gap: 6px; }            /* insats + ½ + 2× på en rad */
+.bj-bet input {
+    flex: 1;                                    /* rutan tar resten av bredden */
+    min-width: 0;                               /* får krympa i smal panel */
+    padding: 10px;
+    font-size: 16px;
     background: var(--bg);
     color: var(--text);
     border: 1px solid var(--line);
     border-radius: 6px;
+}
+
+.bj-small, .bj-action {                         /* mörka knappar (½, 2×, Hit, Stand) */
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 15px;
     cursor: pointer;
 }
-.dice-bet button:hover { border-color: var(--gold); }
+.bj-small { width: 42px; }
+.bj-small:hover, .bj-action:hover:not(:disabled) { border-color: var(--gold); }   /* guldkant vid hover */
+.bj-action:disabled { opacity: 0.4; cursor: not-allowed; }
 
-.dice-info { max-width: 1000px; margin: 50px auto 0; }
-.dice-info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 30px; }
-.dice-formula { font-family: monospace; color: var(--gold) !important; }
-.dice-table-title { margin-bottom: 8px; }
-.dice-note { font-size: 14px; margin: 10px 0 30px; }
-.dice-note a { color: var(--gold); text-decoration: underline; }
-.dice-session .sim-table td { padding: 8px 6px; }
+.bj-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;             /* 2 × 2 knappar: Hit Stand / Double Split */
+    gap: 8px;
+}
+.bj-action { flex: 1; padding: 14px; font-weight: bold; }
+.bj-play { padding: 16px; font-size: 18px; }    /* stora Spela-knappen */
 
-@media (max-width: 700px) {
-    .dice-info-grid { grid-template-columns: 1fr; }
+
+/* ---- Bordet ---- */
+.bj-table {
+    position: relative;                         /* så leken kan placeras i hörnet */
+    min-height: 460px;
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;             /* dealern överst, du nederst */
+    gap: 20px;                                  /* minsta avstånd mellan raderna */
+    align-items: center;                        /* allt centrerat */
+    background: radial-gradient(ellipse at center, #14524a, #0b3530 75%);   /* grönt filt, ljusast i mitten */
+}
+
+.bj-shoe {                                      /* kortleken uppe till höger */
+    position: absolute;
+    top: 18px;
+    right: 22px;
+    width: 52px;
+    height: 74px;
+    border-radius: 6px;
+    border: 3px solid #fdfaf2;
+    background: repeating-linear-gradient(45deg, var(--gold) 0 6px, #b8913f 6px 12px);
+    box-shadow: 3px 3px 0 #fdfaf2, 6px 6px 0 #b8913f;   /* två "kort till" bakom = en hög */
+}
+
+.bj-hands {                                     /* dina händer, bredvid varandra efter split */
+    display: flex;
+    flex-wrap: wrap;                            /* bryt rad om de inte får plats */
+    justify-content: center;
+    gap: 16px 40px;                             /* 40px mellan händerna */
+}
+
+.bj-hand.dim { opacity: 0.45; }                 /* handen som väntar på sin tur efter split */
+.bj-handbet { color: var(--muted); font-size: 13px; }   /* "Insats 200" under summan */
+
+.bj-hand {
+    transition: opacity 0.3s;                   /* mjuk nedtoning */
+    display: flex;
+    flex-direction: column;                     /* summan och korten under varandra */
+    align-items: center;
+    gap: 10px;
+}
+
+.bj-cards {
+    display: flex;                              /* korten bredvid varandra */
+    min-height: 112px;                          /* bordet hoppar inte när korten tas bort */
+    perspective: 600px;                         /* behövs för att vändningen ska se 3D ut */
+}
+
+.bj-total {                                     /* pillret med summan */
+    min-width: 44px;
+    padding: 2px 12px;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 20px;
+    background: var(--bg);
+    border: 2px solid var(--line);
+    visibility: hidden;                         /* osynligt tills korten ligger */
+}
+.bj-total.show { visibility: visible; }
+.bj-total.win  { background: var(--win);  color: var(--bg); border-color: var(--win); }    /* grönt = vinst */
+.bj-total.lose { background: var(--lose); color: var(--bg); border-color: var(--lose); }   /* rött = förlust */
+
+.bj-rules {                                     /* texten mitt på bordet */
+    position: relative;                         /* så resultatet kan läggas ovanpå */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    color: rgba(245, 238, 220, 0.35);           /* svag text, som tryckt på filten */
+    font-size: 13px;
+    letter-spacing: 2px;
+}
+.bj-rules span:first-child { color: rgba(217, 169, 79, 0.6); font-size: 15px; }   /* guldig första rad */
+
+.bj-result {                                    /* +150 / −100 mitt på bordet */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);           /* exakt i mitten */
+    padding: 8px 22px;
+    border-radius: 10px;
+    font-size: 26px;
+    font-weight: bold;
+    letter-spacing: 0;
+    background: var(--bg);
+    color: var(--text);
+    border: 2px solid var(--line);
+    display: none;                              /* syns bara när handen är slut */
+}
+.bj-result.show { display: block; animation: pop 0.35s ease-out; }
+.bj-rules:has(.bj-result.show) span { visibility: hidden; }   /* göm regeltexten bakom resultatet */
+.bj-result.win  { color: var(--win);  border-color: var(--win); }
+.bj-result.lose { color: var(--lose); border-color: var(--lose); }
+
+@keyframes pop {                                /* växer upp från litet */
+    from { transform: translate(-50%, -50%) scale(0.4); opacity: 0; }
+}
+
+
+/* ---- Korten ---- */
+.card {
+    width: 78px;                                /* kortets storlek */
+    height: 112px;
+    padding: 5px 8px;                           /* luft runt texten */
+    display: flex;                              /* text överst och symbol nederst ... */
+    flex-direction: column;
+    justify-content: space-between;             /* ... med tomrum emellan */
+    background: #fdfaf2;                        /* vitt kort */
+    color: #1b1b1b;                             /* svart text */
+    border-radius: 8px;                         /* rundade hörn */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.45); /* skugga så kortet ser ut att ligga på bordet */
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 1.1;
+}
+.card + .card { margin-left: -26px; }           /* varje kort efter det första ligger lite över föregående */
+.card .suit { font-size: 34px; align-self: flex-end; }   /* stor symbol nere till höger */
+.card.red { color: #c0392b; }                   /* hjärter och ruter */
+
+.card.back {                                    /* dealerns dolda kort */
+    background: repeating-linear-gradient(45deg, var(--gold) 0 6px, #b8913f 6px 12px);   /* randigt mönster */
+    border: 3px solid #fdfaf2;                  /* vit kant som på ett riktigt kort */
+}
+
+/* 0.45s = ANIM_TIME i games/blackjack.php
+   backwards = kortet är osynligt tills dess tur kommer (animation-delay) */
+.card.deal { animation: deal 0.45s ease-out backwards; }   /* nytt kort glider in */
+.card.flip { animation: flip 0.45s ease-out backwards; }   /* dolt kort vänds */
+
+@keyframes deal {                               /* startar uppe till höger (där leken ligger), snett och osynligt */
+    from { opacity: 0; transform: translate(220px, -140px) rotate(25deg); }
+}
+@keyframes flip {                               /* startar på kanten (90 grader) och vrids till rakt */
+    from { transform: rotateY(90deg); }
+}
+
+
+/* ---- Informationen under spelet ---- */
+.bj-info { margin-top: 50px; }
+.bj-info h2 { margin: 36px 0 14px; }            /* luft ovanför varje rubrik */
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);      /* tre rutor i bredd */
+    gap: 16px;
+}
+
+.info-card {
+    padding: 20px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 15px;
+}
+.info-card.wide { grid-column: span 3; }        /* bred ruta över hela raden */
+.info-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }   /* två kolumner inuti en ruta */
+.info-card h3 { color: var(--gold); font-size: 18px; }
+.info-card ul { padding-left: 18px; }
+.info-card li { margin-bottom: 4px; }
+.info-card a { color: var(--gold); text-decoration: underline; }
+
+.formula {                                      /* uträkningar i en egen ruta */
+    padding: 10px 14px;
+    background: var(--bg);
+    border-left: 3px solid var(--gold);
+    border-radius: 4px;
+    font-family: Consolas, monospace;
+    font-size: 14px;
+}
+
+.note { color: var(--muted); font-size: 13px; }
+
+.info-card table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.info-card th { text-align: left; color: var(--muted); font-weight: normal; }
+.info-card th, .info-card td { padding: 6px 4px; border-bottom: 1px solid var(--line); }
+.info-card .pos { color: var(--win); }          /* gröna siffror */
+.info-card .neg { color: var(--lose); }         /* röda siffror */
+
+
+/* ---- Mobil / smal skärm ---- */
+@media (max-width: 1000px) {
+    .bj-layout { grid-template-columns: 1fr; }  /* live stats under spelet */
+    .info-grid { grid-template-columns: 1fr; }  /* en ruta i bredd */
+    .info-card.wide { grid-column: span 1; }
+    .info-cols { grid-template-columns: 1fr; }
+}
+@media (max-width: 650px) {
+    .bj-game { grid-template-columns: 1fr; }    /* kontrollerna under bordet, som på Stake mobil */
+    .bj-controls { order: 2; border-right: none; border-top: 1px solid var(--line); }
+    .bj-table { gap: 24px; }                     /* korten krockar inte med resultatet */
 }

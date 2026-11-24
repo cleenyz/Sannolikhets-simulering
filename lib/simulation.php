@@ -151,7 +151,7 @@ function gamePresets(): array
         'roulette_dozen'    => 'Roulette: dussin (1-12)',
         'roulette_straight' => 'Roulette: ett nummer',
         'slots'             => 'Slots (3 hjul)',
-        'bj_basic'          => 'Blackjack: grundstrategi',
+        'bj_basic'          => 'Blackjack: grundstrategi (med double och split)',
         'bj_dealer'         => 'Blackjack: spela som dealern',
         'bj_stand12'        => 'Blackjack: stanna på 12 eller mer',
         'bj_random'         => 'Blackjack: slumpa varje beslut',
@@ -348,7 +348,9 @@ function slotsSpin(): float
 |   - ny blandad lek varje hand
 |   - dealern drar till minst 17 (stannar på alla 17)
 |   - blackjack betalar 3:2
-|   - bara HIT och STAND (ingen dubbling eller split)
+|   - HIT, STAND, DOUBLE (på två kort, även efter split) och SPLIT
+|     (två kort med samma värde, bara en gång, delade ess får ett kort var)
+|   - 21 efter split räknas inte som blackjack (betalar 1:1)
 |
 | Kort är heltal 0-51:  kort % 13  ->  0 = ess, 1-8 = 2-9, 9-12 = 10/J/Q/K
 |
@@ -417,7 +419,8 @@ function bjDraw(array &$deck, int &$pos): int
 
 
 /*
-    Strategier (bara hit/stand):
+    Strategier (dealer, stand12 och random använder bara hit/stand,
+    basic använder också double och split, se bjAction):
 
     dealer   drar tills 17, precis som dealern
     stand12  stannar på 12 eller mer ("ta aldrig risken att busta")
@@ -473,7 +476,90 @@ function bjPlayerHits(string $strategy, int $total, bool $soft, int $dealerUp): 
 
 
 /*
-    Spelar en hand. Returnerar nettoresultat: +1.5, +1, 0 eller -1.
+    Grundstrategi för DOUBLE.  $up = dealerns synliga kort (2-11, ess = 11).
+    Standardtabellen för "dealern stannar på 17, dubbling efter split".
+*/
+
+function bjDoubles(int $total, bool $soft, int $up): bool
+{
+    if ($soft) {                                           // mjuka händer: ess + ett kort
+        if ($total === 13 || $total === 14) {
+            return $up === 5 || $up === 6;                 // A2, A3: dubbla mot 5-6
+        }
+        if ($total === 15 || $total === 16) {
+            return $up >= 4 && $up <= 6;                   // A4, A5: dubbla mot 4-6
+        }
+        if ($total === 17 || $total === 18) {
+            return $up >= 3 && $up <= 6;                   // A6, A7: dubbla mot 3-6
+        }
+        return false;                                      // A8, A9: dubbla aldrig
+    }
+
+    if ($total === 9) {
+        return $up >= 3 && $up <= 6;                       // hård 9: dubbla mot 3-6
+    }
+    if ($total === 10) {
+        return $up <= 9;                                   // hård 10: dubbla mot 2-9
+    }
+    if ($total === 11) {
+        return $up <= 10;                                  // hård 11: dubbla mot allt utom ess
+    }
+    return false;                                          // övriga: dubbla aldrig
+}
+
+
+/*
+    Grundstrategi för SPLIT.  $value = värdet på korten i paret (2-11).
+*/
+
+function bjSplits(int $value, int $up): bool
+{
+    switch ($value) {
+        case 11:                                           // ess-par
+        case 8:                                            // 8-par (16 är värsta handen)
+            return true;                                   // splitta alltid
+        case 10:                                           // 20 är redan bra
+        case 5:                                            // 10 är bättre att dubbla
+            return false;                                  // splitta aldrig
+        case 9:
+            return $up <= 9 && $up !== 7;                  // mot 2-6, 8, 9
+        case 7:
+        case 3:
+        case 2:
+            return $up <= 7;                               // mot 2-7
+        case 6:
+            return $up <= 6;                               // mot 2-6
+        case 4:
+            return $up === 5 || $up === 6;                 // mot 5-6
+    }
+    return false;
+}
+
+
+/*
+    Vad ska spelaren göra?  Returnerar 'hit', 'stand', 'double' eller 'split'.
+*/
+
+function bjAction(string $strategy, array $cards, int $dealerUp, bool $canDouble, bool $canSplit): string
+{
+    [$total, $soft] = bjTotal($cards);                     // handens summa och om den är mjuk
+
+    if ($strategy === 'basic') {                           // bara grundstrategin dubblar och splittar
+        if ($canSplit && bjSplits(bjValue($cards[0]), $dealerUp)) {
+            return 'split';                                // 1. kolla par först
+        }
+        if ($canDouble && bjDoubles($total, $soft, $dealerUp)) {
+            return 'double';                               // 2. sedan dubbling
+        }
+    }
+
+    return bjPlayerHits($strategy, $total, $soft, $dealerUp) ? 'hit' : 'stand';   // 3. annars hit/stand
+}
+
+
+/*
+    Spelar en hand. Returnerar nettoresultat i antal insatser:
+    +1.5 (blackjack), +1, 0, -1, och med double/split upp till +4 / -4.
 */
 
 function bjPlayHand(array &$deck, string $strategy, stdClass $stats): float
@@ -503,42 +589,75 @@ function bjPlayHand(array &$deck, string $strategy, stdClass $stats): float
         return $playerBJ ? 1.5 : -1.0;
     }
 
-    $dealerUp = bjValue($dealer[0]);          // dealerns synliga kort
+    $dealerUp = bjValue($dealer[0]);                       // dealerns synliga kort
 
-    while (true) {
+    /* Spelarens händer. Från början en, efter split två. bet = antal insatser. */
 
-        $t = bjTotal($player);
+    $hands = [['cards' => $player, 'bet' => 1, 'done' => false]];
 
-        if ($t[0] >= 21) {
-            break;
+    for ($i = 0; $i < count($hands); $i++) {               // count() ökar om vi splittar
+
+        while (!$hands[$i]['done']) {
+
+            $cards = $hands[$i]['cards'];
+
+            if (bjTotal($cards)[0] >= 21) {                // 21 eller tjock: handen är klar
+                break;
+            }
+
+            $two      = count($cards) === 2;               // dubbla/splitta går bara på två kort
+            $canSplit = $two && count($hands) === 1 && bjValue($cards[0]) === bjValue($cards[1]);
+            $action   = bjAction($strategy, $cards, $dealerUp, $two, $canSplit);
+
+            if ($action === 'split') {
+                $aces  = bjValue($cards[0]) === 11;        // delade ess får bara ett kort var
+                $hands = [
+                    ['cards' => [$cards[0], bjDraw($deck, $pos)], 'bet' => 1, 'done' => $aces],
+                    ['cards' => [$cards[1], bjDraw($deck, $pos)], 'bet' => 1, 'done' => $aces],
+                ];
+            } elseif ($action === 'double') {
+                $hands[$i]['bet']     = 2;                 // dubbel insats
+                $hands[$i]['cards'][] = bjDraw($deck, $pos);   // exakt ett kort till
+                $hands[$i]['done']    = true;
+            } elseif ($action === 'hit') {
+                $hands[$i]['cards'][] = bjDraw($deck, $pos);
+            } else {
+                $hands[$i]['done'] = true;                 // stand
+            }
         }
-
-        if (!bjPlayerHits($strategy, $t[0], $t[1], $dealerUp)) {
-            break;
-        }
-
-        $player[] = bjDraw($deck, $pos);
     }
 
-    $playerTotal = bjTotal($player)[0];
+    /* Dealern drar bara om minst en hand inte är tjock. */
 
-    if ($playerTotal > 21) {
-        return -1.0;
+    $allBust = true;
+
+    foreach ($hands as $h) {
+        if (bjTotal($h['cards'])[0] <= 21) {
+            $allBust = false;
+        }
     }
 
-    while (bjTotal($dealer)[0] < 17) {
-        $dealer[] = bjDraw($deck, $pos);
+    if (!$allBust) {
+        while (bjTotal($dealer)[0] < 17) {
+            $dealer[] = bjDraw($deck, $pos);
+        }
     }
 
     $dealerTotal = bjTotal($dealer)[0];
+    $net         = 0.0;
 
-    if ($dealerTotal > 21 || $playerTotal > $dealerTotal) {
-        return 1.0;
+    foreach ($hands as $h) {
+
+        $playerTotal = bjTotal($h['cards'])[0];
+
+        if ($playerTotal > 21) {
+            $net -= $h['bet'];                             // tjock
+        } elseif ($dealerTotal > 21 || $playerTotal > $dealerTotal) {
+            $net += $h['bet'];                             // vinst
+        } elseif ($playerTotal < $dealerTotal) {
+            $net -= $h['bet'];                             // förlust
+        }                                                  // lika: 0
     }
 
-    if ($playerTotal === $dealerTotal) {
-        return 0.0;
-    }
-
-    return -1.0;
+    return $net;
 }
