@@ -39,14 +39,13 @@ include __DIR__ . '/includes/header.php';
             </div>
 
             <!-- Ingen blackjack.jpg finns än -->
-            <div class="game-card soon">
+            <div class="game-card soon" style="--img: url('assets/img/Blackjack.jpg')">
                 <h3>Blackjack</h3>
                 <p>Kom så nära 21 som möjligt.</p>
                 <span class="tag">Kommer snart</span>
             </div>
 
-            <!-- Ingen slots.jpg finns än. Lägg till bild: style="--img: url('assets/img/slots.jpg')" -->
-            <div class="game-card soon">
+            <div class="game-card soon" style="--img: url('assets/img/slots.jpg')">
                 <h3>Slots</h3>
                 <p>Slumpade kombinationer.</p>
                 <span class="tag">Kommer snart</span>
