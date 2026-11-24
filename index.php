@@ -28,13 +28,20 @@ include __DIR__ . '/includes/header.php';
 
             <div class="game-card soon" style="--img: url('assets/img/dice.jpg')">
                 <h3>Dice</h3>
-                <p>Sexsidig tärning.</p>
+                <p>Välj din vinstchans. Lägre chans, högre vinst.</p>
                 <span class="tag">Kommer snart</span>
             </div>
 
             <div class="game-card soon" style="--img: url('assets/img/roulette.jpg')">
                 <h3>Roulette</h3>
-                <p>37 fack och husfördel.</p>
+                <p>Europeisk roulette, 37 fack.</p>
+                <span class="tag">Kommer snart</span>
+            </div>
+
+            <!-- Ingen blackjack.jpg finns än -->
+            <div class="game-card soon">
+                <h3>Blackjack</h3>
+                <p>Kom så nära 21 som möjligt.</p>
                 <span class="tag">Kommer snart</span>
             </div>
 

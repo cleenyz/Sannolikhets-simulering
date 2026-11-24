@@ -45,6 +45,16 @@ h2 { font-size: 30px; margin-bottom: 16px; }
     color: var(--muted);
 }
 .balance strong { color: var(--gold); margin-left: 6px; }
+.balance .reset {
+    margin-left: 8px;
+    padding: 0 6px;
+    background: none;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    cursor: pointer;
+}
+.balance .reset:hover { color: var(--text); }
 
 
 /* ===== KNAPP ===== */

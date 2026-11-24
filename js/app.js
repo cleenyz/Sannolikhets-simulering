@@ -18,3 +18,11 @@ async function loadBalance() {
 }
 
 loadBalance();
+
+// Knappen ↺ i menyn: sätter saldot till 10 000 igen
+document.getElementById('reset-balance').onclick = async () => {
+    if (!confirm('Återställa saldot till 10 000?')) return;      // fråga först
+    const res = await fetch(BASE + 'api/reset.php', { method: 'POST' });  // be servern nollställa
+    const data = await res.json();                                // svaret: {"balance": 10000}
+    showBalance(data.balance);                                    // visa nya saldot
+};

@@ -344,7 +344,7 @@ function slotsSpin(): float
 | BLACKJACK
 |--------------------------------------------------------------------------
 |
-| Samma regler som i games/blackjack.php:
+| Regler (samma ska användas i games/blackjack.php):
 |   - ny blandad lek varje hand
 |   - dealern drar till minst 17 (stannar på alla 17)
 |   - blackjack betalar 3:2
@@ -480,7 +480,7 @@ function bjPlayHand(array &$deck, string $strategy, stdClass $stats): float
 {
     $pos = 0;
 
-    /* Samma ordning som i blackjack.php: spelare, dealer, spelare, dealer */
+    /* Given: spelare, dealer, spelare, dealer */
 
     $player   = [bjDraw($deck, $pos)];
     $dealer   = [bjDraw($deck, $pos)];

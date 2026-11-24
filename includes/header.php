@@ -27,5 +27,9 @@
         <a href="<?= $base ?>index.php#games">Spel</a>
         <a href="<?= $base ?>simulation.php">Simulering</a>
     </nav>
-    <div class="balance">Saldo <strong id="balance">–</strong></div>
+    <div class="balance">
+        Saldo <strong id="balance">–</strong>
+        <!-- Återställ saldot till 10 000 (hanteras i js/app.js) -->
+        <button class="reset" id="reset-balance" title="Återställ saldo till 10 000">↺</button>
+    </div>
 </header>
