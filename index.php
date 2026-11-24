@@ -26,11 +26,11 @@ include __DIR__ . '/includes/header.php';
                 <span class="tag">Spela</span>
             </a>
 
-            <div class="game-card soon" style="--img: url('assets/img/dice.jpg')">
+            <a class="game-card" href="games/dice.php" style="--img: url('assets/img/dice.jpg')">
                 <h3>Dice</h3>
                 <p>Välj din vinstchans. Lägre chans, högre vinst.</p>
-                <span class="tag">Kommer snart</span>
-            </div>
+                <span class="tag">Spela</span>
+            </a>
 
             <div class="game-card soon" style="--img: url('assets/img/roulette.jpg')">
                 <h3>Roulette</h3>

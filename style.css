@@ -296,3 +296,103 @@ a.game-card:hover { border-color: var(--gold); }
     .game-layout { grid-template-columns: 1fr; }
     .game-box { width: 100%; }
 }
+
+
+/* ===== PANELER OCH TABELLER (används av dice.php, samma stil som simuleringen) ===== */
+.sim-panel { padding: 20px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
+.sim-panel h3 { font-size: 20px; margin-bottom: 10px; }
+.sim-panel p { color: var(--muted); font-size: 15px; margin-bottom: 8px; }
+.sim-table { width: 100%; border-collapse: collapse; font-size: 15px; }
+.sim-table th, .sim-table td { text-align: left; padding: 10px 6px; border-bottom: 1px solid var(--line); }
+.sim-table th { color: var(--muted); font-weight: normal; }
+.sim-table .num { text-align: right; font-variant-numeric: tabular-nums; }
+
+
+/* ===== DICE ===== */
+.dice-result {                         /* stora siffran för senaste slaget */
+    text-align: center;
+    font-size: 56px;
+    font-weight: bold;
+    font-variant-numeric: tabular-nums;
+}
+.dice-result.win { color: var(--win); }
+.dice-result.lose { color: var(--lose); }
+
+.dice-slider { position: relative; padding-top: 34px; }   /* plats för markören ovanför */
+
+.dice-slider input[type=range] {       /* själva reglaget */
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 10px;
+    border-radius: 5px;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+}
+.dice-slider input[type=range]::-webkit-slider-thumb {   /* knoppen, Chrome/Edge/Safari */
+    -webkit-appearance: none;
+    width: 26px; height: 26px;
+    border-radius: 6px;
+    background: var(--gold);
+    border: 3px solid var(--bg);
+}
+.dice-slider input[type=range]::-moz-range-thumb {       /* knoppen, Firefox */
+    width: 22px; height: 22px;
+    border-radius: 6px;
+    background: var(--gold);
+    border: 3px solid var(--bg);
+}
+
+.dice-marker {                         /* bubblan som visar var slaget hamnade */
+    position: absolute;
+    top: 0;
+    transform: translateX(-50%);       /* centrera bubblan på slaget */
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--bg);
+    transition: left 0.4s ease;        /* glider till nya slaget, som på Stake */
+}
+.dice-marker.win { background: var(--win); }
+.dice-marker.lose { background: var(--lose); }
+
+.dice-scale { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-top: 6px; }
+
+.dice-boxes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.dice-boxes div { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px; text-align: center; }
+.dice-boxes span { display: block; font-size: 12px; color: var(--muted); }
+.dice-boxes strong { font-size: 17px; font-variant-numeric: tabular-nums; }
+
+.dice-mode {                           /* knappen som byter under/över */
+    background: none;
+    border: none;
+    color: var(--gold);
+    font: bold 17px Georgia, serif;
+    cursor: pointer;
+}
+
+.dice-bet { display: flex; gap: 6px; }
+.dice-bet input { flex: 1; min-width: 0; }
+.dice-bet button {                     /* ½ och 2× */
+    width: 48px;
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    cursor: pointer;
+}
+.dice-bet button:hover { border-color: var(--gold); }
+
+.dice-info { max-width: 1000px; margin: 50px auto 0; }
+.dice-info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 30px; }
+.dice-formula { font-family: monospace; color: var(--gold) !important; }
+.dice-table-title { margin-bottom: 8px; }
+.dice-note { font-size: 14px; margin: 10px 0 30px; }
+.dice-note a { color: var(--gold); text-decoration: underline; }
+.dice-session .sim-table td { padding: 8px 6px; }
+
+@media (max-width: 700px) {
+    .dice-info-grid { grid-template-columns: 1fr; }
+}
